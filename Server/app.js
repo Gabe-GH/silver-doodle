@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 
+// MIDDLEWARE
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
 // ROUTE IMPORTS
 const professorsAPI = require('./Routes/v1_professor_routes')
 
