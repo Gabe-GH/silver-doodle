@@ -1,6 +1,10 @@
 const request = require('supertest')
 const app = require('../../app')
 
+data = {
+    text: "data"
+}
+
 /////////////////
 // HAPPY PATHS //
 /////////////////
@@ -47,9 +51,7 @@ describe('GET /v1/professors/:professorId', () => {
 describe('POST /v1/professors', () => {
     test(`returns a new professor`, async () => {
         const response = await request(app).post(`/v1/professors`)
-            .send({
-                text: "data"
-            })
+            .send(data)
 
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Create Professor success`)
@@ -59,6 +61,8 @@ describe('POST /v1/professors', () => {
 describe('PUT /v1/professors/:professorId', () => {
     test(`returns an updated professor`, async () => {
         const response = await request(app).put(`/v1/professors/123`)
+        .send(data)
+        
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Updated Professor with id: 123`)
     })
@@ -96,6 +100,8 @@ describe('GET /v1/professors/:professorId/reviews/reviewId', () => {
 describe('POST /v1/professors/:professorId/reviews', () => {
     test(`returns a created review for one professor`, async () => {
         const response = await request(app).post(`/v1/professors/123/reviews`)
+        .send(data)
+
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Created review for professor with id: 123`)
     })
@@ -104,6 +110,8 @@ describe('POST /v1/professors/:professorId/reviews', () => {
 describe('PUT /v1/professors/:professorId/reviews/reviewId', () => {
     test(`returns an updated review for one professor`, async () => {
         const response = await request(app).put(`/v1/professors/123/reviews/abc`)
+        .send(data)
+
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Updated review with id: abc for professor with id: 123`)
     })
@@ -132,3 +140,31 @@ describe('POST /v1/professors', () => {
         expect(response.body.message).toBe(`Create Professor failed`)
     })
 })
+
+describe('PUT /v1/professors/:professorId', () => {
+    test(`returns an updated professor`, async () => {
+        const response = await request(app).put(`/v1/professors/123`)
+        expect(response.statusCode).toBe(422)
+        expect(response.body.message).toBe(`Update Professor failed`)
+    })
+});
+
+///////////////////
+// REVIEW ROUTES //
+///////////////////
+
+describe('POST /v1/professors/:professorId/reviews', () => {
+    test(`returns a created review for one professor`, async () => {
+        const response = await request(app).post(`/v1/professors/123/reviews`)
+        expect(response.statusCode).toBe(422)
+        expect(response.body.message).toBe(`Create Review failed`)
+    })
+});
+
+describe('PUT /v1/professors/:professorId/reviews/reviewId', () => {
+    test(`returns an updated review for one professor`, async () => {
+        const response = await request(app).put(`/v1/professors/123/reviews/abc`)
+        expect(response.statusCode).toBe(422)
+        expect(response.body.message).toBe(`Update Review failed`)
+    })
+});
