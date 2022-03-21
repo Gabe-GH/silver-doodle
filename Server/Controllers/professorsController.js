@@ -16,7 +16,11 @@ const getOneProfessors = (req, res) => {
 // @route   POST /v1/professors
 // @access  Private
 const createProfessor = (req, res) => {
-    res.status(205).json({ message: `Created Professor` })
+    if (!req.body.text) {
+        res.status(422)
+        throw new Error(`Create Professor failed`)
+    }
+    res.status(205).json({ message: `Create Professor success` })
 }
 
 // @desc    Update professor
