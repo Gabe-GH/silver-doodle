@@ -1,74 +1,38 @@
-const express = require ('express')
+const express = require('express')
 const router = express.Router()
+
+// CONTROLLER IMPORTS
+const {
+    getAllProfessors,
+    getOneProfessors,
+    createProfessor,
+    updateProfessor,
+    deleteProfessor,
+} = require('../Controllers/professorsController')
+
+const {
+    getAllReviews,
+    getOneReview,
+    createReview,
+    updateReview,
+    deleteReview,
+} = require('../Controllers/reviewsController')
+
 
 //////////////////////
 // PROFESSOR ROUTES //
 //////////////////////
 
-router.get('/', (req,res) => {
-    res
-        .status(205)
-        .json({message: 'All professors'})
-})
-
-router.get('/:professorId', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Professor with id: ${req.params.professorId}`})
-})
-
-router.post('/', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Created Professor`})
-})
-
-router.put('/:professorId', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Updated Professor with id: ${req.params.professorId}`})
-})
-
-router.delete('/:professorId', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Deleted Professor with id: ${req.params.professorId}`})
-})
+router.route('/').get(getAllProfessors).post(createProfessor)
+router.route('/:professorId').get(getOneProfessors).put(updateProfessor).delete(deleteProfessor)
 
 
 ///////////////////
 // REVIEW ROUTES //
 ///////////////////
 
-router.get('/:professorId/reviews', (req,res) => {
-    res
-        .status(205)
-        .json({message: `All reviews for professor with id: ${req.params.professorId}`})
-})
-
-router.get('/:professorId/reviews/:reviewId', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Comment with id: ${req.params.reviewId} for professor with id: ${req.params.professorId}`})
-})
-
-router.post('/:professorId/reviews', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Created review for professor with id: ${req.params.professorId}`})
-})
-
-router.put('/:professorId/reviews/:reviewId', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Updated review with id: ${req.params.reviewId} for professor with id: ${req.params.professorId}`})
-})
-
-router.delete('/:professorId/reviews/:reviewId', (req,res) => {
-    res
-        .status(205)
-        .json({message: `Deleted review with id: ${req.params.reviewId} for professor with id: ${req.params.professorId}`})
-})
+router.route('/:professorId/reviews').get(getAllReviews).post(createReview)
+router.route('/:professorId/reviews/:reviewId').get(getOneReview).put(updateReview).delete(deleteReview)
 
 
 module.exports = router
