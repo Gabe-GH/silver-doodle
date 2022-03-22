@@ -1,9 +1,16 @@
 const request = require('supertest')
 const app = require('../../app')
+const db = require('../db')
+
+beforeAll(async () => await db.connect());
+afterEach(async () => await db.clearDatabase())
+afterAll(async () => await db.closeDatabase())
 
 data = {
     text: "data"
 }
+
+
 
 /////////////////
 // HAPPY PATHS //
@@ -36,7 +43,6 @@ describe('GET /v1/professors', () => {
     test(`returns all professors`, async () => {
         const response = await request(app).get(`/v1/professors`)
         expect(response.statusCode).toBe(205)
-        expect(response.body.message).toBe(`All professors`)
     })
 });
 
@@ -61,8 +67,8 @@ describe('POST /v1/professors', () => {
 describe('PUT /v1/professors/:professorId', () => {
     test(`returns an updated professor`, async () => {
         const response = await request(app).put(`/v1/professors/123`)
-        .send(data)
-        
+            .send(data)
+
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Updated Professor with id: 123`)
     })
@@ -100,7 +106,7 @@ describe('GET /v1/professors/:professorId/reviews/reviewId', () => {
 describe('POST /v1/professors/:professorId/reviews', () => {
     test(`returns a created review for one professor`, async () => {
         const response = await request(app).post(`/v1/professors/123/reviews`)
-        .send(data)
+            .send(data)
 
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Created review for professor with id: 123`)
@@ -110,7 +116,7 @@ describe('POST /v1/professors/:professorId/reviews', () => {
 describe('PUT /v1/professors/:professorId/reviews/reviewId', () => {
     test(`returns an updated review for one professor`, async () => {
         const response = await request(app).put(`/v1/professors/123/reviews/abc`)
-        .send(data)
+            .send(data)
 
         expect(response.statusCode).toBe(205)
         expect(response.body.message).toBe(`Updated review with id: abc for professor with id: 123`)
