@@ -1,10 +1,14 @@
 const asyncHandler = require('express-async-handler')
 
+const Professor = require('../Models/professorModel')
+
 // @desc    Get all professors
 // @route   GET /v1/professors
 // @access  Private
 const getAllProfessors = asyncHandler(async (req, res) => {
-    res.status(205).json({ message: 'All professors' })
+    professors = await Professor.find()
+
+    res.status(205).json(professors)
 })
 
 // @desc    Get professor
